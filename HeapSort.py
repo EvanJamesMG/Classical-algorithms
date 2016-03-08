@@ -24,12 +24,16 @@ def heap_sort(ary):
 def max_heapify(ary, start, end):
     root = start
     while True:
-        child = root * 2 + 1        # 调整节点的子节点
-        if child > end: break
-        if child + 1 <= end and ary[child] < ary[child + 1]:
-            child = child + 1       # 取较大的子节点
-        if ary[root] < ary[child]:  # 较大的子节点成为父节点
-            ary[root], ary[child] = ary[child], ary[root]  # 交换
-            root = child            #由于一次调整后，堆仍然违反堆性质，接续从子节点开始调整，使得整个堆都满足堆性质
+        iMax = root
+        iLeft = 2 * root + 1
+        iRight = 2 * (root + 1)
+        if iLeft < end and ary[root] < ary[iLeft]:
+            iMax = iLeft
+        if iRight < end and ary[iMax] < ary[iRight]: #此时右节点不能和根节点比较了，要和iMax比较，因为可能此时的iMax为左节点
+            iMax = iRight
+
+        if iMax != root:
+            ary[root], ary[iMax] = ary[iMax], ary[root]
+            root = iMax  #迭代或者递归{max_heapify(ary,iMax,end)}都可以
         else:
             break
